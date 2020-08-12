@@ -1,0 +1,10 @@
+{
+    "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "cmake.configureArgs": [],
+    "cmake.configureEnvironment": {},
+    "cmake.buildArgs": [],
+    "cmake.buildEnvironment": {},
+    "cmake.debugConfig": {
+        "args": []
+    }
+}
