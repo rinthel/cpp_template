@@ -6,5 +6,6 @@
     "cmake.buildEnvironment": {},
     "cmake.debugConfig": {
         "args": []
-    }
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }
