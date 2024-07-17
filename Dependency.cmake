@@ -24,36 +24,17 @@ ExternalProject_Add(
 )
 set(DEPENDENCY_LIST ${DEPENDENCY_LIST} dep-spdlog)
 # if (GENERATOR_IS_MULTI_CONFIG)
-if (WIN32)
+if (MSVC)
     set(DEPENDENCY_LIBS ${DEPENDENCY_LIBS} spdlog$<$<CONFIG:Debug>:d>)
 else()
     set(DEPENDENCY_LIBS ${DEPENDENCY_LIBS} spdlog)
 endif()
 
-# clipp: header-only good c++ argument parser
-ExternalProject_Add(
-    dep-clipp
-    GIT_REPOSITORY "https://github.com/muellan/clipp.git"
-    GIT_TAG "v1.2.2"
-    GIT_SHALLOW 1
-    UPDATE_COMMAND ""
-    PATCH_COMMAND ""
-    CONFIGURE_COMMAND ""
-    BUILD_COMMAND ""
-    INSTALL_COMMAND
-        ${CMAKE_COMMAND} -E make_directory ${DEPENDENCY_INSTALL_DIR}/include &&
-        ${CMAKE_COMMAND} -E copy
-            ${CMAKE_CURRENT_BINARY_DIR}/dep-clipp-prefix/src/dep-clipp/include/clipp.h
-            ${DEPENDENCY_INSTALL_DIR}/include
-    TEST_COMMAND ""
-    )
-set(DEPENDENCY_LIST ${DEPENDENCY_LIST} dep-clipp)
-
 # json: header-only json parser using modern c++
 ExternalProject_Add(
     dep-json
     GIT_REPOSITORY "https://github.com/nlohmann/json.git"
-    GIT_TAG "v3.9.0"
+    GIT_TAG "v3.11.3"
     GIT_SHALLOW 1
     UPDATE_COMMAND ""
     PATCH_COMMAND ""
@@ -68,7 +49,7 @@ set(DEPENDENCY_LIST ${DEPENDENCY_LIST} dep-json)
 ExternalProject_Add(
     dep_magic_enum
     GIT_REPOSITORY "https://github.com/Neargye/magic_enum.git"
-    GIT_TAG "v0.7.3"
+    GIT_TAG "v0.9.6"
     GIT_SHALLOW 1
     UPDATE_COMMAND ""
     PATCH_COMMAND ""
@@ -84,7 +65,7 @@ set(DEPENDENCY_LIST ${DEPENDENCY_LIST} dep_magic_enum)
 ExternalProject_Add(
     dep_filesystem
     GIT_REPOSITORY "https://github.com/gulrak/filesystem.git"
-    GIT_TAG "v1.3.2"
+    GIT_TAG "v1.5.14"
     GIT_SHALLOW 1
     UPDATE_COMMAND ""
     PATCH_COMMAND ""
@@ -96,25 +77,46 @@ ExternalProject_Add(
     )
 set(DEPENDENCY_LIST ${DEPENDENCY_LIST} dep_filesystem)
 
-# glfw
+# sdl2
 ExternalProject_Add(
-    dep_glfw
-    GIT_REPOSITORY "https://github.com/glfw/glfw.git"
-    GIT_TAG "3.3-stable"
+    dep_sdl
+    GIT_REPOSITORY "https://github.com/libsdl-org/SDL.git"
+    GIT_TAG "release-2.30.5"
     GIT_SHALLOW 1
     UPDATE_COMMAND ""
     PATCH_COMMAND ""
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${DEPENDENCY_INSTALL_DIR}
-        -DGLFW_BUILD_EXAMPLES=OFF
-        -DGLFW_BUILD_TESTS=OFF
-        -DGLFW_BUILD_DOCS=OFF
+        -DSDL_TEST_LIBRARY=OFF
     TEST_COMMAND ""
     )
-set(DEPENDENCY_LIST ${DEPENDENCY_LIST} dep_glfw)
-set(DEPENDENCY_LIBS ${DEPENDENCY_LIBS} glfw3)
+set(DEPENDENCY_LIST ${DEPENDENCY_LIST} dep_sdl)
+if (MSVC)
+    set(DEPENDENCY_LIBS ${DEPENDENCY_LIBS} SDL2$<$<CONFIG:Debug>:d>)
+else()
+    set(DEPENDENCY_LIBS ${DEPENDENCY_LIBS} SDL2)
+endif()
 
 ## additional dependencies, for graphics programming
+
+# # clipp: header-only good c++ argument parser
+# ExternalProject_Add(
+#     dep-clipp
+#     GIT_REPOSITORY "https://github.com/muellan/clipp.git"
+#     GIT_TAG "v1.2.2"
+#     GIT_SHALLOW 1
+#     UPDATE_COMMAND ""
+#     PATCH_COMMAND ""
+#     CONFIGURE_COMMAND ""
+#     BUILD_COMMAND ""
+#     INSTALL_COMMAND
+#         ${CMAKE_COMMAND} -E make_directory ${DEPENDENCY_INSTALL_DIR}/include &&
+#         ${CMAKE_COMMAND} -E copy
+#             ${CMAKE_CURRENT_BINARY_DIR}/dep-clipp-prefix/src/dep-clipp/include/clipp.h
+#             ${DEPENDENCY_INSTALL_DIR}/include
+#     TEST_COMMAND ""
+#     )
+# set(DEPENDENCY_LIST ${DEPENDENCY_LIST} dep-clipp)
 
 # # stb: the king of header-only libraries
 # ExternalProject_Add(
@@ -172,3 +174,21 @@ set(DEPENDENCY_LIBS ${DEPENDENCY_LIBS} glfw3)
 # add_dependencies(dep-imgui dep-glfw)
 # set(DEPENDENCY_LIST ${DEPENDENCY_LIST} dep-imgui)
 # set(DEPENDENCY_LIBS ${DEPENDENCY_LIBS} imgui)
+
+# # glfw
+# ExternalProject_Add(
+#     dep_glfw
+#     GIT_REPOSITORY "https://github.com/glfw/glfw.git"
+#     GIT_TAG "3.3-stable"
+#     GIT_SHALLOW 1
+#     UPDATE_COMMAND ""
+#     PATCH_COMMAND ""
+#     CMAKE_ARGS
+#         -DCMAKE_INSTALL_PREFIX=${DEPENDENCY_INSTALL_DIR}
+#         -DGLFW_BUILD_EXAMPLES=OFF
+#         -DGLFW_BUILD_TESTS=OFF
+#         -DGLFW_BUILD_DOCS=OFF
+#     TEST_COMMAND ""
+#     )
+# set(DEPENDENCY_LIST ${DEPENDENCY_LIST} dep_glfw)
+# set(DEPENDENCY_LIBS ${DEPENDENCY_LIBS} glfw3)
