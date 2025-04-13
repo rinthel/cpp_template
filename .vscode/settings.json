@@ -5,7 +5,9 @@
     "cmake.buildArgs": [],
     "cmake.buildEnvironment": {},
     "cmake.debugConfig": {
-        "args": []
+        "args": [],
+        "cwd": "${workspaceFolder}",
+        "MIMode": "lldb"
     },
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }
